@@ -1,7 +1,7 @@
 import requests
 import beautifulsoup4 as bs
 
-data_source_1 = "https://costellomanagementllc.managebuilding.com/Resident/public/rentals"
+data_source_1 = "https://costellomanagementllc.managebuilding.com/Resident/public/rentals" # Costello management
 res = requests.get(data_source_1).text
 soup = bs(res, 'html.parser')
 
@@ -81,3 +81,5 @@ for i in range(len(list_adress)):
         list_tool.append(n[i])
     list_total.append(list_tool)
     list_tool = [] # Reset
+
+print(list_total[0])
