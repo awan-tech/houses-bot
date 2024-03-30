@@ -1,5 +1,5 @@
 import requests
-import beautifulsoup4 as bs
+from bs4 import BeautifulSoup as bs
 
 url = "https://costellomanagementllc.managebuilding.com/Resident/public/rentals" # Costello management
 res = requests.get(url)
