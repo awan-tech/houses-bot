@@ -70,10 +70,27 @@ list_date = [convert(items) for items in list_date] # Call the function
 add_str = "AVALIABLE "
 list_date = [add_str + element for element in list_date] # Add up AVALIABLE
 
-## Description Class = featured-listing__description hide--mobile
+
+## Link Class = featured-listing accent-color-border-on-hover
+## Description Class = unit-detail__description
+
+list_link = []
 list_des = []
-for item in soup.find_all(class_="featured-listing__description hide--mobile"):
-    list_des.append(item.text)
+for link in soup.find_all('a', class_='featured-listing accent-color-border-on-hover'): # Get all link in the first layer
+    list_link.append(link.get('href'))
+
+def get_des(): # Get description in the second layer
+    for link in list_link:
+        url_des = "https://costellomanagementllc.managebuilding.com" + link
+        res_des = requests.get(url_des)
+        content = res_des.text 
+        soup_des = bs(content, 'html.parser')
+        for description in soup_des.find_all('p', class_='unit-detail__description'):
+            list_des.append(description.text)
+
+get_des() # Call the function
+
+list_des = [a + b for a, b in zip(list_des[::2], list_des[1::2])] # Merge two descriptions into one single element
 
 ## Merge all the datas
 list_total = []
@@ -86,4 +103,12 @@ for i in range(len(list_adress)):
     list_total.append(list_tool)
     list_tool = [] # Reset
 
-print(list_total[0])
+## Data cleaning for description
+for i in range(len(list_total)):
+    list_total[i][4] = list_total[i][4].replace("\no\t", "")
+    list_total[i][4] = list_total[i][4].replace("\n", "")
+    list_total[i][4] = list_total[i][4].replace("\t", "")
+    list_total[i][4] = list_total[i][4].replace("w/", "")
+
+## Now all the data is in the list_total, each element is an row.
+
