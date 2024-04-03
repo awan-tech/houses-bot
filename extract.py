@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup as bs
-from parameter_store import para_store
+from parameter_store import para_store # Call function
 
 para_url = "url"
 

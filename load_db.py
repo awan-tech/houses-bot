@@ -1,7 +1,7 @@
 from extract import list_total # Call list_total from other file
 import mysql.connector
 from mysql.connector import Error
-from parameter_store import para_store
+from parameter_store import para_store # Call function
 
 para_host = 'HOST'
 para_db = 'database_name'
