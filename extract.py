@@ -1,7 +1,10 @@
 import requests
 from bs4 import BeautifulSoup as bs
+from parameter_store import para_store
 
-url = "https://costellomanagementllc.managebuilding.com/Resident/public/rentals" # Costello management
+para_url = "url"
+
+url = para_store(para_url) # Costello management
 res = requests.get(url)
 page_content = res.text
 soup = bs(page_content, 'html.parser')

@@ -1,11 +1,18 @@
 from extract import list_total # Call list_total from other file
 import mysql.connector
 from mysql.connector import Error
+from parameter_store import para_store
 
-connection = mysql.connector.connect(host='practice-database.mysql.database.azure.com', 
-                                        database='website',
-                                        user='shared_user',
-                                        password='Awanpassword!')
+para_host = 'HOST'
+para_db = 'database_name'
+para_user = 'USER'
+para_password = 'PASSWORD'
+
+
+connection = mysql.connector.connect(host=para_store(para_host), 
+                                        database=para_store(para_db),
+                                        user=para_store(para_user),
+                                        password=para_store(para_password))
 
 if connection.is_connected():
     print('Connected to MySQL database')
