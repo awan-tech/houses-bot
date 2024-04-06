@@ -5,5 +5,5 @@ def para_store(para_name):
     response = ssm.get_parameter(Name=para_name, WithDecryption=True)
     return response['Parameter']['Value']
 
-if __name__ == '__main__':
+if __name__ == '__main__': ## Test
     print('The function is under main')

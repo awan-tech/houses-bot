@@ -1,7 +1,7 @@
-from extract import list_total # Call list_total from other file
+from extract import extract_main 
 import mysql.connector
 from mysql.connector import Error
-from parameter_store import para_store # Call function
+from parameter_store import para_store 
 
 para_host = 'HOST'
 para_db = 'database_name'
@@ -17,7 +17,7 @@ connection = mysql.connector.connect(host=para_store(para_host),
 if connection.is_connected():
     print('Connected to MySQL database')
     cursor = connection.cursor()
-    for rows in list_total:
+    for rows in extract_main():
         query = '''
             INSERT INTO houses (address,house_type,price,avaliable_date,description)
             VALUES (%s,%s,%s,%s,%s)
