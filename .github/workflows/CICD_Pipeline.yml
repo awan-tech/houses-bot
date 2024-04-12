@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest # Set up virtual environment
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11"] # Specify python version
+        python-version: ["3.8", "3.9", "3.10"] # Specify python version
         
     steps:
 
@@ -30,8 +30,13 @@ jobs:
       run: |
         pylint $(git ls-files '*.py')
 
-  comment: ## CCS check
+  CCS_check: ## CCS check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: ./scripts/ccs.py
+
+      - name: Make script executable
+        run: chmod +x ./scripts/css.py
+
+      - name: Execute
+        run: ./scripts/ccs.py
