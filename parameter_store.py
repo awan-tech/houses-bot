@@ -1,3 +1,6 @@
+'''This script is used to connect to the AWS parameter store and get parameters,
+it should be used as a module.
+'''
 import boto3
 
 def para_store(para_name):
@@ -5,5 +8,6 @@ def para_store(para_name):
     response = ssm.get_parameter(Name=para_name, WithDecryption=True)
     return response['Parameter']['Value']
 
-if __name__ == '__main__': ## Test
-    print('main')
+if __name__ == '__main__':
+    print('This should be used as a module.')
+    

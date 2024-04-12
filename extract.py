@@ -1,10 +1,13 @@
+'''This file is a crawler which provides data extraction
+The final data will be stored in a list.
+'''
 import requests
 from bs4 import BeautifulSoup as bs
-from parameter_store import para_store 
+from parameter_store import para_store
 
 
 def convert(ele):  # Create a function to convert month into numbers
-    dic_date = {  
+    dic_date = {
     "January": "1","February": "2","March": "3","April": "4","May": "5","June": "6","July": "7","August": "8","September": "9",
     "October": "10","November": "11","December": "12"}
     letter = ''.join(filter(str.isalpha, ele))
@@ -77,11 +80,11 @@ def avaliable_date(): ## Get date
     list_date = [items.replace("\n", '') for items in list_date]
     list_date = [items.replace("\r", '') for items in list_date]
     list_date = [items.replace(" ", '') for items in list_date]
-    list_date = [items.replace("available", '') for items in list_date] 
+    list_date = [items.replace("available", '') for items in list_date]
 
     list_date = [convert(items) for items in list_date] ## Call 'convert' function
     add_str = "AVALIABLE "
-    list_date = [add_str + element for element in list_date] 
+    list_date = [add_str + element for element in list_date]
 
     return list_date
 
@@ -101,7 +104,7 @@ def get_des(): # Get description in the second layer
     for link in list_link:
         url_des = url_head + link
         res_des = requests.get(url_des)
-        content = res_des.text 
+        content = res_des.text
         soup_des = bs(content, 'html.parser')
         for description in soup_des.find_all('p', class_='unit-detail__description'):
             list_des.append(description.text)
@@ -126,7 +129,7 @@ def extract_main():
             list_tool.append(n[i])
         list_total.append(list_tool)
         list_tool = [] # Reset
-        
+
     return list_total
 
 # ## Now all the data is in the list_total, each element is an row.
