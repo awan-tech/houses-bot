@@ -28,7 +28,7 @@ jobs:
         
     - name: Analysing the code with pylint # Analyze all file end with '.py'
       run: |
-        pylint $(git ls-files '*.py' | grep -v './scripts/ccs.py')
+        pylint $(git ls-files '*.py' | grep -v 'scripts/ccs.py')
 
   CCS_check: ## CCS check
     runs-on: ubuntu-latest
