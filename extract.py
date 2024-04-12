@@ -126,7 +126,7 @@ def extract_main():
             list_tool.append(n[i])
         list_total.append(list_tool)
         list_tool = [] # Reset
-
+        
     return list_total
 
 # ## Now all the data is in the list_total, each element is an row.

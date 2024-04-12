@@ -1,0 +1,37 @@
+name: CICD_Pipeline
+
+on: 
+  pull_request ## Whenever, wherever a pull requst happended.
+
+
+jobs:
+  pylint_check: ## Pylint check
+  
+    runs-on: ubuntu-latest # Set up virtual environment
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"] # Specify python version
+        
+    steps:
+
+    - uses: actions/checkout@v3 # Get code
+
+    - name: Set up Python ${{ matrix.python-version }} # Set up python with versions in matrix
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies # Install & Upgrade
+      run: | # Upgrade 'pip' to latest version, install all package in 'requirements.txt'
+        python -m pip install --upgrade pip 
+        pip install -r requirements.txt
+        
+    - name: Analysing the code with pylint # Analyze all file end with '.py'
+      run: |
+        pylint $(git ls-files '*.py')
+
+  comment: ## CCS check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: ./scripts/ccs.py
