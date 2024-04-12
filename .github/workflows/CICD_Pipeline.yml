@@ -26,16 +26,16 @@ jobs:
         python -m pip install --upgrade pip 
         pip install -r requirements.txt
         
-    - name: Analysing the code with pylint # Analyze all file end with '.py'
+    - name: Analysing the code with pylint # Analyze all file end with '.py', excluding ccs.py
       run: |
-        pylint $(git ls-files '*.py' | grep -v 'scripts/ccs.py')
+        pylint $(git ls-files '*.py' | grep -v 'scripts/ccs.py') 
 
   CCS_check: ## CCS check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Make script executable
+      - name: Make script executable # Make it executable
         run: chmod +x ./scripts/ccs.py
 
       - name: Execute
