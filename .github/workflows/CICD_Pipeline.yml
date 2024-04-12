@@ -1,7 +1,7 @@
 name: CICD_Pipeline
 
 on: 
-  pull_request ## Whenever, wherever a pull requst happended.
+  push ## Whenever, wherever a pull requst happended.
 
 
 jobs:
