@@ -5,11 +5,21 @@ import requests
 from bs4 import BeautifulSoup as bs
 from parameter_store import para_store
 
-
-def convert(ele):  # Create a function to convert month into numbers
+def convert(ele):
+    '''A function used to convert date to numbers'''
     dic_date = {
-    "January": "1","February": "2","March": "3","April": "4","May": "5","June": "6","July": "7","August": "8","September": "9",
-    "October": "10","November": "11","December": "12"}
+    "January": "1",
+    "February": "2",
+    "March": "3",
+    "April": "4",
+    "May": "5",
+    "June": "6",
+    "July": "7",
+    "August": "8",
+    "September": "9",
+    "October": "10",
+    "November": "11",
+    "December": "12"}
     letter = ''.join(filter(str.isalpha, ele))
     digit = ''.join(filter(str.isdigit, ele))
 
@@ -18,13 +28,14 @@ def convert(ele):  # Create a function to convert month into numbers
 
     return letter + digit
 
-def address():  ## Get address
+def address():
+    '''Get addresses and store them as a list'''
     list_street = []
     list_state = []
     list_address = []
 
     url = para_store('url')
-    res = requests.get(url)
+    res = requests.get(url, timeout=10)
     content = res.text
     soup = bs(content, 'html.parser')
 
@@ -34,43 +45,46 @@ def address():  ## Get address
     for state in soup.find_all(class_="featured-listing__address"): # State information
         list_state.append(state.text)
 
-    for i in range(len(list_street)):
+    for i in range(51):
         list_address.append(list_street[i]+ ' ' + list_state[i])  # Combine street and state
 
     return list_address
 
-
-def house_type(): ## Get house type
+def house_type():
+    '''Get house type and store them as a list'''
     list_ht = []
 
     url = para_store('url')
-    res = requests.get(url)
+    res = requests.get(url, timeout=10)
     content = res.text
     soup = bs(content, 'html.parser')
 
-    for house_type in soup.find_all(class_='featured-listing__features'):
-        list_ht.append(house_type.text)
+    for types in soup.find_all(class_='featured-listing__features'):
+        list_ht.append(types.text)
 
     return list_ht
 
-def price(): ## Get price
+def price():
+    '''Get price and store them as a list'''
     list_price = []
 
     url = para_store('url')
-    res = requests.get(url)
+    res = requests.get(url, timeout=10)
     content = res.text
     soup = bs(content, 'html.parser')
 
-    for price in soup.find_all(class_="featured-listing__price accent-color"):
-        list_price.append(price.text)
+    for prices in soup.find_all(class_="featured-listing__price accent-color"):
+        list_price.append(prices.text)
 
     return list_price
 
-def avaliable_date(): ## Get date
+def avaliable_date():
+    '''Get avaliable date and store it as a list'''
+     ## Get date
     list_date = []
 
     url = para_store('url')
-    res = requests.get(url)
+    res = requests.get(url,timeout=10)
     content = res.text
     soup = bs(content, 'html.parser')
 
@@ -88,22 +102,23 @@ def avaliable_date(): ## Get date
 
     return list_date
 
-def get_des(): # Get description in the second layer
+def get_des():
+    '''Get desription and store it as a list'''
     list_link = []
     list_des = []
 
     url_head = para_store('url_head')
     url = para_store('url')
-    res = requests.get(url)
+    res = requests.get(url, timeout=10)
     content = res.text
     soup = bs(content, 'html.parser')
 
-    for link in soup.find_all('a', class_='featured-listing accent-color-border-on-hover'): # Get all link in the first layer
+    for link in soup.find_all('a', class_='featured-listing accent-color-border-on-hover'):
         list_link.append(link.get('href'))
 
     for link in list_link:
         url_des = url_head + link
-        res_des = requests.get(url_des)
+        res_des = requests.get(url_des, timeout=10)
         content = res_des.text
         soup_des = bs(content, 'html.parser')
         for description in soup_des.find_all('p', class_='unit-detail__description'):
@@ -112,7 +127,7 @@ def get_des(): # Get description in the second layer
     list_des = [' '.join(list_des[i:i+2]) for i in range(0, len(list_des), 2)]
 
     ## Data cleaning
-    for i in range(len(list_des)):
+    for i in range(51):
         list_des[i] = list_des[i].replace("\no\t", "")
         list_des[i] = list_des[i].replace("\n", "")
         list_des[i] = list_des[i].replace("\t", "")
@@ -120,6 +135,7 @@ def get_des(): # Get description in the second layer
     return list_des
 
 def extract_main():
+    '''Merge all the data and store them in a list'''
     ## Merge all the datas
     list_total = []
     list_tool = []
@@ -134,5 +150,5 @@ def extract_main():
 
 # ## Now all the data is in the list_total, each element is an row.
 
-if __name__ == '__main__': ## Test
-    print('On main')
+if __name__ == '__main__':
+    print('Use extract_main() in this file')

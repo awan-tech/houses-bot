@@ -3,6 +3,7 @@
 '''
 import mysql.connector
 from parameter_store import para_store
+from extract import extract_main
 
 if __name__ == '__main__':
 
