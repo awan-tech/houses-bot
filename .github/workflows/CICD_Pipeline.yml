@@ -1,7 +1,6 @@
 name: CICD_Pipeline
 
 on: 
-  push:
   pull_request: ## PR
 
 
@@ -37,14 +36,15 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          const fs = require('fs');
-          const ccsOutput = fs.readFileSync('pylint_output.txt', 'utf8');
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.name,
-            body: `**CCS Check Results:**\n\`\`\`\n${ccsOutput}\n\`\`\``
-          });
+            const fs = require('fs');
+            const ccsOutput = fs.readFileSync('pylint_output.txt', 'utf8');
+            const commentBody = '### CCS Check Results\n```' + ccsOutput + '```';
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.name,
+              body: commentBody
+            });
 
   CCS_check: ## CCS check
     runs-on: ubuntu-latest
