@@ -2,7 +2,7 @@ name: CICD_Pipeline
 
 on: 
   push:
-  pull_request: ## Whenever, wherever a pull requst happended.
+  pull_request:
 
 
 jobs:
@@ -43,7 +43,7 @@ jobs:
         run: ./scripts/ccs.py > ccs_result.txt || true
   
       - name: Post CCS Results to PR
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'push'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
