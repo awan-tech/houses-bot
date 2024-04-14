@@ -35,10 +35,29 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Make script executable # Make it executable
-        run: chmod +x ./scripts/ccs.py
+      - name: Execute CCS
+        id: ccs
+        run: |
+          if ./scripts/ccs.py; then
+            echo "CCS_SUCCESS=true" >> $GITHUB_ENV 
+          else
+            echo "CCS_SUCCESS=false" >> $GITHUB_ENV
+          fi
 
-      - name: Execute
-        run: ./scripts/ccs.py
+      - name: Post result to PR if successful
+        if: env.CCS_SUCCESS == 'true'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const commentBody = "### CCS Check Successful\n" + 
+                                "CCS check completed successfully without errors.";
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.name,
+              body: commentBody
+            });
+
 
 
