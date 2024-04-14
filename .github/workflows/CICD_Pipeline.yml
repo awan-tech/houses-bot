@@ -28,23 +28,7 @@ jobs:
         
     - name: Analysing the code with pylint # Analyze all file end with '.py', excluding ccs.py
       run: |
-        pylint $(git ls-files '*.py' | grep -v 'scripts/ccs.py') > pylint_output.txt || true
-
-    - name: Post pylint Results to PR comment
-      if: github.event_name == 'pull_request'
-      uses: actions/github-script@v6
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-            const fs = require('fs');
-            const ccsOutput = fs.readFileSync('pylint_output.txt', 'utf8');
-            const commentBody = '### CCS Check Results\n```' + ccsOutput + '```';
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.name,
-              body: commentBody
-            });
+        pylint $(git ls-files '*.py' | grep -v 'scripts/ccs.py')
 
   CCS_check: ## CCS check
     runs-on: ubuntu-latest
