@@ -1,8 +1,7 @@
 name: CICD_Pipeline
 
 on: 
-  push:
-  pull_request:
+  pull_request: ## PR
 
 
 jobs:
@@ -40,20 +39,6 @@ jobs:
         run: chmod +x ./scripts/ccs.py
 
       - name: Execute
-        run: ./scripts/ccs.py > ccs_result.txt || true
-  
-      - name: Post CCS Results to PR
-        if: github.event_name == 'push'
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const ccsOutput = fs.readFileSync('ccs_result.txt', 'utf8');
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.name,
-              body: `**CCS Check Results:**\n\`\`\`\n${ccsOutput}\n\`\`\``
-            });
+        run: ./scripts/ccs.py
+
 
