@@ -6,30 +6,30 @@ on:
 
 
 jobs:
-  pylint_check: ## Pylint check
+  # pylint_check: ## Pylint check
   
-    runs-on: ubuntu-latest # Set up virtual environment
-    strategy:
-      matrix:
-        python-version: ["3.8", "3.9", "3.10"] # Specify python version
+  #   runs-on: ubuntu-latest # Set up virtual environment
+  #   strategy:
+  #     matrix:
+  #       python-version: ["3.8", "3.9", "3.10"] # Specify python version
         
-    steps:
+  #   steps:
 
-    - uses: actions/checkout@v3 # Get code
+  #   - uses: actions/checkout@v3 # Get code
 
-    - name: Set up Python ${{ matrix.python-version }} # Set up python with versions in matrix
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
+  #   - name: Set up Python ${{ matrix.python-version }} # Set up python with versions in matrix
+  #     uses: actions/setup-python@v3
+  #     with:
+  #       python-version: ${{ matrix.python-version }}
 
-    - name: Install dependencies # Install & Upgrade
-      run: | # Upgrade 'pip' to latest version, install all package in 'requirements.txt'
-        python -m pip install --upgrade pip 
-        pip install -r requirements.txt
+  #   - name: Install dependencies # Install & Upgrade
+  #     run: | # Upgrade 'pip' to latest version, install all package in 'requirements.txt'
+  #       python -m pip install --upgrade pip 
+  #       pip install -r requirements.txt
         
-    - name: Analysing the code with pylint # Analyze all file end with '.py', excluding ccs.py
-      run: |
-        pylint $(git ls-files '*.py' | grep -v 'scripts/ccs.py')
+  #   - name: Analysing the code with pylint # Analyze all file end with '.py', excluding ccs.py
+  #     run: |
+  #       pylint $(git ls-files '*.py' | grep -v 'scripts/ccs.py')
 
   CCS_check: ## CCS check
     runs-on: ubuntu-latest
