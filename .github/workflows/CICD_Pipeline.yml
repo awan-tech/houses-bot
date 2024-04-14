@@ -1,7 +1,8 @@
 name: CICD_Pipeline
 
 on: 
-  push ## Whenever, wherever a pull requst happended.
+  push:
+  pull_request: ## Whenever, wherever a pull requst happended.
 
 
 jobs:
@@ -28,7 +29,24 @@ jobs:
         
     - name: Analysing the code with pylint # Analyze all file end with '.py', excluding ccs.py
       run: |
-        pylint $(git ls-files '*.py' | grep -v 'scripts/ccs.py') 
+        pylint $(git ls-files '*.py' | grep -v 'scripts/ccs.py') > pylint_output.txt || true
+
+    - name: Upload pylint result as PR comment
+      uses: actions/github-script@v6
+      if: github.event_name == 'pull_request'
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const fs = require('fs');
+          const pylintOutput = fs.readFileSync('pylint_output.txt', 'utf8');
+          const commentBody = '### :robot: Pylint Report\n' + '```\n' + pylintOutput + '\n```';
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.name,
+            body: commentBody
+          });
+
 
   CCS_check: ## CCS check
     runs-on: ubuntu-latest
@@ -39,4 +57,20 @@ jobs:
         run: chmod +x ./scripts/ccs.py
 
       - name: Execute
-        run: ./scripts/ccs.py
+        run: ./scripts/ccs.py > ccs_output.txt || true
+
+      - name: Upload CCS result as PR comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const ccsOutput = fs.readFileSync('ccs_output.txt', 'utf8');
+            const commentBody = '### CCS Check Results\n' + '```\n' + ccsOutput + '\n```';
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.name,
+              body: commentBody
+            });
