@@ -45,7 +45,7 @@ jobs:
             body: '### Pylint Results\n```\n' + output + '\n```'
           });
 
-  CCS_check: ## CCS check
+  CCS_check: ### CCS check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
