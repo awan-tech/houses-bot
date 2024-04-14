@@ -1,6 +1,7 @@
 name: CICD_Pipeline
 
-on: 
+on:
+  push: ## Push 
   pull_request: ## PR
 
 
