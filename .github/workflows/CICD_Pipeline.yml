@@ -1,8 +1,8 @@
 name: CICD_Pipeline
 
-on: 
-  push:
-  pull_request:
+on:
+  push: ## Push 
+  pull_request: ## PR
 
 
 jobs:
@@ -30,6 +30,7 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py' | grep -v 'scripts/ccs.py')
+
 
   CCS_check:
     runs-on: ubuntu-latest
