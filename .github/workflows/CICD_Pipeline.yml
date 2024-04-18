@@ -51,7 +51,7 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           body: "CCS Check Passed"
         env:
-          MY_TOKEN: ${{ secrets.MY_TOKEN }}
+          GITHUB_TOKEN: $secrets.MY_TOKEN
   
 
 
