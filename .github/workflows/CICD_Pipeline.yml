@@ -45,7 +45,7 @@ jobs:
         run: ./scripts/ccs.py
 
       - name: Create comment
-        if: ${{ failure() || steps.ccs_check.outcome == 'failure'}}
+        if: ${{ success() || steps.ccs_check.outcome == 'success' }}
         uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.pull_request.number }}
