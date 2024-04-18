@@ -55,14 +55,6 @@ jobs:
 
             [1]: https://github.com/peter-evans/create-or-update-comment
 
-      # - name: Create or update comment
-      #   uses: peter-evans/create-or-update-comment@v4
-      #   if: success()
-      #   with:
-      #     issue-number: ${{ github.event.pull_request.number }}
-      #     github-token: ${{ secrets.MY_TOKEN }}
-      #     body: "CCS Check Passed"
-
 
   
 
