@@ -46,12 +46,11 @@ jobs:
 
       - name: Create or update comment
         uses: peter-evans/create-or-update-comment@v4
-        if: ${{ success() }}
+        if: success()
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: "CCS Check Passed"
-        env:
-          GITHUB_TOKEN: $secrets.MY_TOKEN
+
   
 
 
