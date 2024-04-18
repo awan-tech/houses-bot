@@ -44,14 +44,14 @@ jobs:
         run: ./scripts/ccs.py
 
       - name: Create comment
-        if: ${{ success() || steps.ccs_check.outcome == 'success' }}
+        if: ${{ success() || steps.ccs_check.outcome -- 'success' }}
         uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             ***CCS passed***
         env:
-          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
+          GITHUB_TOKEN: $secrets.MY_TOKEN
   
 
 
