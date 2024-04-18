@@ -6,54 +6,51 @@ on:
 
 
 jobs:
-  pylint_check: ## Pylint check
+  pylint_check:
   
-    runs-on: ubuntu-latest # Set up virtual environment
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"] # Specify python version
+        python-version: ["3.8", "3.9", "3.10"] 
         
     steps:
 
     - uses: actions/checkout@v3 # Get code
 
-    - name: Set up Python ${{ matrix.python-version }} # Set up python with versions in matrix
+    - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install dependencies # Install & Upgrade
-      run: | # Upgrade 'pip' to latest version, install all package in 'requirements.txt'
+    - name: Install dependencies
+      run: |
         python -m pip install --upgrade pip 
         pip install -r requirements.txt
         
-    - name: Analysing the code with pylint # Analyze all file end with '.py', excluding ccs.py
+    - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py' | grep -v 'scripts/ccs.py')
 
-  CCS_check: ## CCS check
+  CCS_check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Make script executable # Make it executable
+      - name: Make script executable
         run: chmod +x ./scripts/ccs.py
 
       - name: Execute
-        run: ./scripts/ccs.py > ccs_result.txt || true
-  
-      - name: Post CCS Results to PR
-        if: github.event_name == 'push'
-        uses: actions/github-script@v6
+        id: ccs_check
+        run: ./scripts/ccs.py
+
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@v4
+        if: ${{ steps.ccs_check.outcome == 'success' }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const ccsOutput = fs.readFileSync('ccs_result.txt', 'utf8');
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.name,
-              body: `**CCS Check Results:**\n\`\`\`\n${ccsOutput}\n\`\`\``
-            });
+          issue-number: ${{ github.event.pull_request.number }}
+          body: "CCS Check Passed :white_check_mark:"
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+  
+
 
