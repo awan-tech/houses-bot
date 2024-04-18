@@ -30,6 +30,27 @@ jobs:
       run: |
         pylint $(git ls-files '*.py' | grep -v 'scripts/ccs.py')
 
+    - name: Pylint success comment
+      if: ${{ success() || steps.pylint_check.outcome == 'success' }}
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        token: ${{ secrets.MY_TOKEN }}
+        body: |
+          ***Pylint check passed***
+
+    - name: Pylint failed
+      if: ${{ steps.pylint_check.outcome == 'failure' }}
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        token: ${{ secrets.MY_TOKEN }}
+        body: |
+          ***Pylint check failed***
+          Please modify your code
+
+
+
   CCS_check:
     runs-on: ubuntu-latest
     steps:
@@ -42,7 +63,7 @@ jobs:
         id: ccs_check
         run: ./scripts/ccs.py
 
-      - name: Create comment
+      - name: CCS success comment
         if: ${{ success() || steps.ccs_check.outcome == 'success' }}
         uses: peter-evans/create-or-update-comment@v4
         with:
@@ -50,6 +71,15 @@ jobs:
           token: ${{ secrets.MY_TOKEN }}
           body: |
             ***CCS passed***
-
+      
+      - name: CCS failure comment
+        if: ${{ steps.ccs_check.outcome == 'failure' }}
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          token: ${{ secrets.MY_TOKEN }}
+          body: |
+            ***CCS failed***
+            Credentials were found in your code!
 
 
