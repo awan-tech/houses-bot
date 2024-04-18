@@ -1,7 +1,7 @@
 name: CICD_Pipeline
 
-on:
-  push:
+on: [push, pull_request]
+
 
 jobs:
   pylint_check:
@@ -37,8 +37,9 @@ jobs:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
           ***Pylint passed***
-        env:
-         GITHUB_TOKEN: $secrets.MY_TOKEN
+      env:
+        GITHUB_TOKEN: $secrets.MY_TOKEN
+
 
     
     - name: Pylint check failed
@@ -48,8 +49,8 @@ jobs:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
           ***Pylint check failed. Please modify your code.***
-        env:
-          GITHUB_TOKEN: $secrets.MY_TOKEN
+      env:
+        GITHUB_TOKEN: $secrets.MY_TOKEN
 
 
   CCS_check:
