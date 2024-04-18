@@ -1,8 +1,8 @@
 name: CICD_Pipeline
 
 on:
-  push: ## Push 
-  pull_request: ## PR
+  push:
+  pull_request:
 
 
 jobs:
@@ -51,7 +51,7 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           body: "CCS Check Passed :white_check_mark:"
         env:
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          GITHUB_TOKEN: $secrets.MY_GITHUB_TOKEN
   
 
 
