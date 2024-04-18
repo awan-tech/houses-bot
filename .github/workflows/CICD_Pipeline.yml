@@ -51,7 +51,7 @@ jobs:
           body: |
             ***CCS passed***
         env:
-          GITHUB_TOKEN: $secrets.MY_TOKEN
+          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
   
 
 
