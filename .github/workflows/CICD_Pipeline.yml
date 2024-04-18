@@ -49,8 +49,9 @@ jobs:
         if: success()
         with:
           issue-number: ${{ github.event.pull_request.number }}
+          github-token: ${{ secrets.MY_TOKEN }}
           body: "CCS Check Passed"
-          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
+
 
   
 
