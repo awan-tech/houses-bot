@@ -30,29 +30,6 @@ jobs:
       run: |
         pylint $(git ls-files '*.py' | grep -v 'scripts/ccs.py')
 
-    - name: Pylint success comment
-      if: ${{ success() || steps.pylint_check.outcome == 'success' }}
-      uses: peter-evans/create-or-update-comment@v4
-      with:
-        issue-number: ${{ github.event.pull_request.number }}
-        body: |
-          ***Pylint passed***
-      env:
-        GITHUB_TOKEN: $secrets.MY_TOKEN
-
-
-    
-    - name: Pylint check failed
-      if: ${{ steps.pylint_check.outcome == 'failure' }}
-      uses: peter-evans/create-or-update-comment@v4
-      with:
-        issue-number: ${{ github.event.pull_request.number }}
-        body: |
-          ***Pylint check failed. Please modify your code.***
-      env:
-        GITHUB_TOKEN: $secrets.MY_TOKEN
-
-
   CCS_check:
     runs-on: ubuntu-latest
     steps:
@@ -73,7 +50,7 @@ jobs:
           body: |
             ***CCS passed***
         env:
-          GITHUB_TOKEN: $secrets.MY_TOKEN
+          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
   
 
 
