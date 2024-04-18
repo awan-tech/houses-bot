@@ -48,7 +48,7 @@ jobs:
         uses: peter-evans/create-or-update-comment@v4
         if: ${{ success() }}
         with:
-          issue-number: ${{ github.event.pull_request.number }}
+          comment-id: ${{ github.event.comment.id }}
           body: "CCS Check Passed"
         env:
           GITHUB_TOKEN: $secrets.GITHUB_TOKEN
