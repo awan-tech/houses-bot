@@ -50,6 +50,7 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: "CCS Check Passed"
+          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
 
   
 
