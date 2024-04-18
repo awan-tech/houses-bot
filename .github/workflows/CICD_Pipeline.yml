@@ -25,8 +25,19 @@ jobs:
         pip install -r requirements.txt
         
     - name: Analysing the code with pylint
+      id: pylint_check
       run: |
         pylint $(git ls-files '*.py' | grep -v 'scripts/ccs.py')
+
+    - name: Create comment
+      if: ${{ success() || steps.pylint_check.outcome -- 'success' }}
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        body: |
+          ***Pylint passed***
+        env:
+         GITHUB_TOKEN: $secrets.MY_TOKEN
 
 
   CCS_check:
