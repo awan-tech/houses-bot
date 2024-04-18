@@ -1,6 +1,7 @@
 name: CICD_Pipeline
 
-on: push
+on:
+  push:
 
 jobs:
   pylint_check:
