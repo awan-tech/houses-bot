@@ -43,14 +43,12 @@ jobs:
       - name: CCS_Check
         id: ccs_check
         run: ./scripts/ccs.py
-              echo '::set-output name==status::success'
 
       - name: Generate comments
         if: ${{ steps.ccs_check.outcome == 'success' }}
         uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.pull_request.number }}
-          comment-id: ${{ github.event.comment.id }}
           body: |
             CCS Check Passed :white_check_mark:
         env:
