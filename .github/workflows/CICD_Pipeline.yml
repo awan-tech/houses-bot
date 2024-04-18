@@ -1,8 +1,7 @@
 name: CICD_Pipeline
 
-on:
-  push:
-  pull_request:
+on: [push, pull_request]
+
 
 
 jobs:
@@ -50,7 +49,7 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            ***CCS found an error***
+            ***CCS passed***
         env:
           GITHUB_TOKEN: $secrets.MY_TOKEN
   
