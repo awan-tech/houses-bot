@@ -50,6 +50,7 @@ jobs:
         uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.pull_request.number }}
+          comment-id: ${{ github.event.comment.id }}
           body: |
             CCS Check Passed :white_check_mark:
         env:
