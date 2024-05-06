@@ -1,7 +1,0 @@
-                # response = get_nearby(user_text)
-                # content = ''
-                # for i in response['places']:
-                #     AD = i.get('formattedAddress','No data')
-                #     Name = i['displayName'].get('text', 'No data')
-                #     Rating = i.get('rating','No data')
-                #     content = content + f''':bulb:Name: {Name}\n:star:Rating: {Rating}/5\n:dart:Address: {AD}\n\n'''

@@ -10,7 +10,7 @@ from parameter_store import para_store
 from nearby import get_nearby
 from geo import get_geo
 from map import get_map
-import time
+
 
 
 env_path = Path('.')/'.env'
